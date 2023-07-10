@@ -1,0 +1,11 @@
+.image {
+  display: flex;
+}
+.card-image {
+  width: 100%;
+}
+
+.cards-container {
+  margin-left: 10px;
+  margin-right: 10px;
+}

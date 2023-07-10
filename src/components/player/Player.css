@@ -1,0 +1,91 @@
+.hitButton {
+  padding: 10px 20px;
+  background-color: #ff0000;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.hitButton:active {
+  transform: scale(0.95);
+  background-color: #ff3333;
+}
+
+.hitButton:hover {
+  background-color: #ff1a1a;
+}
+
+.standButton {
+  padding: 10px 20px;
+  background-color: #007bff; /* Blue background */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.standButton:active {
+  transform: scale(0.95);
+  background-color: #0056b3; /* Darker blue when active */
+}
+
+.standButton:hover {
+  background-color: #0069d9; /* Slightly darker blue when hovered */
+}
+
+.doubleButton {
+  padding: 10px 20px;
+  background-color: #000000; /* Black background */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.doubleButton:active {
+  transform: scale(0.95);
+  background-color: #404040; /* Dark grey when active */
+}
+
+.doubleButton:hover {
+  background-color: #808080; /* Light grey when hovered */
+}
+
+.splitButton {
+  padding: 10px 20px;
+  background-color: #008000; /* Green background */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.splitButton:active {
+  transform: scale(0.95);
+  background-color: #006400; /* Darker green when active */
+}
+
+.splitButton:hover {
+  background-color: #32cd32; /* Light green when hovered */
+}
