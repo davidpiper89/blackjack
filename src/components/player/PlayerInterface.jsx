@@ -7,8 +7,6 @@ import Stand from "./playerComponents/Stand";
 import Double from "./playerComponents/Double";
 import Split from "./playerComponents/Split";
 import Total from "../Total";
-import { useDispatch, useSelector } from "react-redux";
-import { setPlayerCompleteTurn } from "../../features/blackjackSlice";
 import Bet from "./playerComponents/Bet";
 import "./Player.css";
 
@@ -29,19 +27,17 @@ const PlayerInterface = ({
   setBlackjack,
   bust,
   setBust,
-  resetGame,
   bet,
-  setBet
+  setBet,
+  playerEnd,
+  setPlayerEnd,
+  stand,
+  setStand,
+  double,
+  setDouble,
 }) => {
-
-  const [stand, setStand] = useState([false, false, false, false]);
-  const [double, setDouble] = useState([false, false, false, false]);
-
-  const turnOver = useSelector((state) => state.blackjack.completeTurn);
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    if (!turnOver && playerCards.length > 0 && playerCards.length <= 4) {
+    if (!playerEnd && playerCards.length > 0 && playerCards.length <= 4) {
       let allHandsOver = playerCards.every(
         (_, index) =>
           stand[index] ||
@@ -51,10 +47,19 @@ const PlayerInterface = ({
       );
 
       if (allHandsOver) {
-        dispatch(setPlayerCompleteTurn(true));
+        setPlayerEnd(true);
       }
     }
-  }, [playerCards, turnOver, stand, double, bust, blackjack, total, dispatch]);
+  }, [
+    playerCards,
+    playerEnd,
+    stand,
+    double,
+    bust,
+    blackjack,
+    total,
+    setPlayerEnd,
+  ]);
 
   const PlayerHandsDisplay = () => {
     return playerCards.map((hands, handIndex) => {

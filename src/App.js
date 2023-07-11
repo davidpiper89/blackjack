@@ -14,7 +14,10 @@ const App = () => {
   const [dealerCards, setDealerCards] = useState();
   const [dealerHidden, setDealerHidden] = useState();
   const [split, setSplit] = useState(0);
-
+  const [playerEnd, setPlayerEnd] = useState(false);
+  const [dealerEnd, setDealerEnd] = useState(false);
+  const [stand, setStand] = useState([false, false, false, false]);
+  const [double, setDouble] = useState([false, false, false, false]);
   const [chips, setChips] = useState(100);
   const [stake, setStake] = useState([[0], [0], [0], [0]]);
   const [total, setTotal] = useState([false, false, false, false]);
@@ -24,7 +27,7 @@ const App = () => {
   const [dealerTotal, setDealerTotal] = useState([0]);
 
   const resetGame = useCallback(() => {
-    const start = beginGame(deckStart);
+    const start = beginGame([...deck]);
     setPlayerCards([start.playerCards]);
     setDeck(start.currentDeck);
     setDealerCards(start.dealerCards);
@@ -32,19 +35,24 @@ const App = () => {
     setSplit(0);
     setTotal([false, false, false, false]);
     setBust([false, false, false, false]);
+    setStand([false, false, false, false]);
+    setDouble([false, false, false, false]);
     setStake([[0], [0], [0], [0]]);
     setBlackjack([false]);
     setDealerTotal([0]);
     setBet(false);
+    setPlayerEnd(false);
+    setDealerEnd(false);
   }, [deckStart]);
 
   useEffect(() => {
-    const start = beginGame(deckStart);
+    const start = beginGame([...deck]);
     setPlayerCards([start.playerCards]);
     setDeck(start.currentDeck);
     setDealerCards(start.dealerCards);
     setDealerHidden(start.dealerHidden);
   }, [deckStart]);
+
 
   return (
     <>
@@ -53,7 +61,7 @@ const App = () => {
         className="d-flex flex-column align-items-center mediaContainer"
       >
         <header>
-          <h1>Piper's BlackJack</h1>
+          <h1 className="app-title">Piper's BlackJack</h1>
         </header>
 
         <>
@@ -66,6 +74,9 @@ const App = () => {
             dealerTotal={dealerTotal}
             setDealerTotal={setDealerTotal}
             bet={bet}
+            playerEnd={playerEnd}
+            dealerEnd={dealerEnd}
+            setDealerEnd={setDealerEnd}
           />
           <PlayerInterface
             playerCards={playerCards}
@@ -90,6 +101,12 @@ const App = () => {
             resetGame={resetGame}
             bet={bet}
             setBet={setBet}
+            playerEnd={playerEnd}
+            setPlayerEnd={setPlayerEnd}
+            stand={stand}
+            setStand={setStand}
+            double={double}
+            setDouble={setDouble}
           />
         </>
         <Result
@@ -97,6 +114,9 @@ const App = () => {
           dealerTotal={dealerTotal}
           resetGame={resetGame}
           setBet={setBet}
+          dealerEnd={dealerEnd}
+          playerCards={playerCards}
+          dealerCards={dealerCards}
         />
         <footer></footer>
       </div>

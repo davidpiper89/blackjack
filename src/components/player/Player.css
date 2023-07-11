@@ -23,7 +23,7 @@
 
 .standButton {
   padding: 10px 20px;
-  background-color: #007bff; /* Blue background */
+  background-color: #007bff; 
   border: none;
   color: white;
   text-align: center;
@@ -37,16 +37,16 @@
 
 .standButton:active {
   transform: scale(0.95);
-  background-color: #0056b3; /* Darker blue when active */
+  background-color: #0056b3;
 }
 
 .standButton:hover {
-  background-color: #0069d9; /* Slightly darker blue when hovered */
+  background-color: #0069d9; 
 }
 
 .doubleButton {
   padding: 10px 20px;
-  background-color: #000000; /* Black background */
+  background-color: #000000; 
   border: none;
   color: white;
   text-align: center;
@@ -60,16 +60,16 @@
 
 .doubleButton:active {
   transform: scale(0.95);
-  background-color: #404040; /* Dark grey when active */
+  background-color: #404040; 
 }
 
 .doubleButton:hover {
-  background-color: #808080; /* Light grey when hovered */
+  background-color: #808080;
 }
 
 .splitButton {
   padding: 10px 20px;
-  background-color: #008000; /* Green background */
+  background-color: #008000; 
   border: none;
   color: white;
   text-align: center;
@@ -83,9 +83,13 @@
 
 .splitButton:active {
   transform: scale(0.95);
-  background-color: #006400; /* Darker green when active */
+  background-color: #006400; 
 }
 
 .splitButton:hover {
-  background-color: #32cd32; /* Light green when hovered */
+  background-color: #32cd32; 
+}
+
+.player-card {
+  width: 100px;
 }

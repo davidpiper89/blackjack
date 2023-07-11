@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import DealerHoleCards from "./DealerHoleCards";
-import { useSelector } from "react-redux";
 import Total from "../Total";
 import { RandomCardPicker } from "../../utils/RandomCardPicker";
+import "./Dealer.css"
 
 const DealerInterface = ({
   dealerCards,
@@ -12,11 +12,10 @@ const DealerInterface = ({
   setDealerCards,
   dealerTotal,
   setDealerTotal,
-  bet
+  bet,
+  playerEnd,
+  setDealerEnd
 }) => {
-  // const [end, setEnd] = useState(false)
-
-  const playerEnd = useSelector((state) => state.blackjack.completeTurn);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -46,8 +45,10 @@ const DealerInterface = ({
         dealerDraw(remainingDeck);
       }, 1000);
       return () => clearTimeout(timeoutId);
+    } else if(playerEnd && dealerTotal >= 17) {
+      setDealerEnd(true);
     }
-  }, [dealerCards, remainingDeck, dealerTotal, dealerDraw]); 
+  }, [dealerCards, remainingDeck, dealerTotal, dealerDraw, playerEnd,setDealerEnd]);
 
   return (
     <>
@@ -55,7 +56,7 @@ const DealerInterface = ({
         ""
       ) : (
         <div>
-          <div className="d-flex justify-content-center align-items-center cards-container">
+          <div className="d-flex justify-content-center align-items-center">
             <DealerHoleCards dealerCards={dealerCards} />
           </div>
           <div className="d-flex flex-column justify-content-center align-items-center">
