@@ -22,7 +22,11 @@ const App = () => {
   const [stake, setStake] = useState([[0], [0], [0], [0]]);
   const [total, setTotal] = useState([false, false, false, false]);
   const [bust, setBust] = useState([false, false, false, false]);
-  const [blackjack, setBlackjack] = useState([false]);
+  const [blackjack, setBlackjack] = useState([false, false, false, false]);
+
+  console.log(chips);
+
+
 
   const [dealerTotal, setDealerTotal] = useState([0]);
 
@@ -38,12 +42,12 @@ const App = () => {
     setStand([false, false, false, false]);
     setDouble([false, false, false, false]);
     setStake([[0], [0], [0], [0]]);
-    setBlackjack([false]);
+    setBlackjack([false, false, false, false]);
     setDealerTotal([0]);
     setBet(false);
     setPlayerEnd(false);
     setDealerEnd(false);
-  }, [deckStart]);
+  }, []);
 
   useEffect(() => {
     const start = beginGame([...deck]);
@@ -52,7 +56,6 @@ const App = () => {
     setDealerCards(start.dealerCards);
     setDealerHidden(start.dealerHidden);
   }, [deckStart]);
-
 
   return (
     <>
@@ -115,8 +118,16 @@ const App = () => {
           resetGame={resetGame}
           setBet={setBet}
           dealerEnd={dealerEnd}
+          playerEnd={playerEnd}
           playerCards={playerCards}
           dealerCards={dealerCards}
+          setChips={setChips}
+          stake={stake}
+          bust={bust}
+          set={setBust}
+          stand={stand}
+          double={double}
+          blackjack={blackjack}
         />
         <footer></footer>
       </div>

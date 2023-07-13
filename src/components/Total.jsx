@@ -21,8 +21,10 @@ const Total = ({
           return newTotal;
         });
       }
+
+
     }
-  }, [hand, handIndex, setTotal, total]);
+  }, [hand, handIndex]);
 
   return (
     <>

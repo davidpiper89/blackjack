@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Betting from "./playerComponents/Betting";
 import PlayerHoleCards from "./playerComponents/PlayerHoleCards";
 import Chips from "./playerComponents/Chips";
@@ -43,8 +43,14 @@ const PlayerInterface = ({
           stand[index] ||
           (double[index] && total[index] <= 21) ||
           blackjack[index] ||
+          bust[index] ||
           total[index] === 21
       );
+
+      if (split > 0) {
+        // If there's a split, ensure all split hands have finished
+        allHandsOver = allHandsOver && playerCards.length === split + 1;
+      }
 
       if (allHandsOver) {
         setPlayerEnd(true);
@@ -59,7 +65,36 @@ const PlayerInterface = ({
     blackjack,
     total,
     setPlayerEnd,
+    split,
   ]);
+
+  useEffect(() => {
+    const flatPlayerCards = playerCards.flat();
+
+    flatPlayerCards.forEach((hand, handIndex) => {
+      if (
+        !blackjack[handIndex] &&
+        hand.length === 2 &&
+        total[handIndex] === 21
+      ) {
+        const newBlackjack = [...blackjack];
+        newBlackjack[handIndex] = true;
+        setBlackjack(newBlackjack);
+      }
+    });
+  }, [playerCards, total, blackjack]);
+
+  useEffect(()=> {
+    const flatPlayerCards = playerCards.flat()
+
+    flatPlayerCards.forEach((hand, handIndex)=> {
+      if(!bust[handIndex] && total[handIndex] > 21) {
+        const newBust = [...bust];
+        newBust[handIndex] = true;
+        setBust(newBust)
+      }
+    })
+  })
 
   const PlayerHandsDisplay = () => {
     return playerCards.map((hands, handIndex) => {
@@ -85,10 +120,6 @@ const PlayerInterface = ({
               <Total
                 hand={hand}
                 handIndex={handIndex}
-                bust={bust}
-                setBust={setBust}
-                blackjack={blackjack}
-                setBlackjack={setBlackjack}
                 total={total}
                 setTotal={setTotal}
               />

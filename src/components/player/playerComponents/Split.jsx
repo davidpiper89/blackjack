@@ -27,19 +27,31 @@ const Split = ({
       const newHand1 = [split1, draw1.card];
       const newHand2 = [split2, draw2.card];
 
+      // Check if new hands have blackjack
+      const newHand1Blackjack =
+        newHand1.reduce((sum, card) => sum + card.value, 0) === 21;
+      const newHand2Blackjack =
+        newHand2.reduce((sum, card) => sum + card.value, 0) === 21;
+
       const newPlayerCards = [...playerCards];
-      newPlayerCards.splice(index, 1, [newHand1], [newHand2]);
+      newPlayerCards[index] = [newHand1];
+      newPlayerCards.push([newHand2]);
 
       setPlayerCards(newPlayerCards);
       setDeck(draw2.array);
 
       const newStake = [...stake];
-      newStake.splice(index + 1, 0, [stake[index][0]]);
+      newStake[index] = [stake[index][0]];
+      newStake.push([stake[index][0]]);
       setStake(newStake);
 
-      const newBlackjack = [...blackjack];
-      newBlackjack.splice(index + 1, 0, false);
-      setBlackjack(newBlackjack);
+      // Update blackjack state
+      setBlackjack((prevState) => {
+        const newBlackjack = [...prevState];
+        newBlackjack[index] = newHand1Blackjack;
+        newBlackjack[(index + 1) % 4] = newHand2Blackjack;
+        return newBlackjack;
+      });
 
       setChips(chips - stake[index][0]);
     }

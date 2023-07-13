@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import DealerHoleCards from "./DealerHoleCards";
 import Total from "../Total";
 import { RandomCardPicker } from "../../utils/RandomCardPicker";
-import "./Dealer.css"
+import "./Dealer.css";
 
 const DealerInterface = ({
   dealerCards,
@@ -14,12 +14,11 @@ const DealerInterface = ({
   setDealerTotal,
   bet,
   playerEnd,
-  setDealerEnd
+  setDealerEnd,
 }) => {
-
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (playerEnd && !dealerCards.includes(dealerHidden[0])) {
+      if (playerEnd && dealerHidden && !dealerCards.includes(dealerHidden[0])) {
         const newDealerCards = [...dealerCards, dealerHidden[0]];
         setDealerCards(newDealerCards);
       }
@@ -37,7 +36,7 @@ const DealerInterface = ({
       setDeck(newCard.array);
     },
     [dealerCards, setDealerCards, setDeck]
-  ); 
+  );
 
   useEffect(() => {
     if (dealerCards && dealerCards.length >= 2 && dealerTotal < 17) {
@@ -45,10 +44,17 @@ const DealerInterface = ({
         dealerDraw(remainingDeck);
       }, 1000);
       return () => clearTimeout(timeoutId);
-    } else if(playerEnd && dealerTotal >= 17) {
+    } else if (playerEnd && dealerTotal >= 17) {
       setDealerEnd(true);
     }
-  }, [dealerCards, remainingDeck, dealerTotal, dealerDraw, playerEnd,setDealerEnd]);
+  }, [
+    dealerCards,
+    remainingDeck,
+    dealerTotal,
+    dealerDraw,
+    playerEnd,
+    setDealerEnd,
+  ]);
 
   return (
     <>
