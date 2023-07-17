@@ -1,3 +1,20 @@
+@media (max-width: 480px) {
+  .hitButton,
+  .standButton,
+  .doubleButton,
+  .splitButton {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 14px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+}
+
 .hitButton {
   padding: 10px 20px;
   background-color: #ff0000;
@@ -90,6 +107,36 @@
   background-color: #32cd32; 
 }
 
-.player-card {
-  width: 100px;
+.player-card0 {
+  width:100px ;
 }
+
+
+.split0 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  gap: 20px;
+}
+
+.split1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 20px;
+}
+
+.split2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+
+.split3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+

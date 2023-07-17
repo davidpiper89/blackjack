@@ -19,13 +19,10 @@ const App = () => {
   const [stand, setStand] = useState([false, false, false, false]);
   const [double, setDouble] = useState([false, false, false, false]);
   const [chips, setChips] = useState(100);
-  const [stake, setStake] = useState([[0], [0], [0], [0]]);
+  const [stake, setStake] = useState([0, 0, 0, 0]);
   const [total, setTotal] = useState([false, false, false, false]);
   const [bust, setBust] = useState([false, false, false, false]);
   const [blackjack, setBlackjack] = useState([false, false, false, false]);
-
-  console.log(chips);
-
 
 
   const [dealerTotal, setDealerTotal] = useState([0]);
@@ -41,7 +38,7 @@ const App = () => {
     setBust([false, false, false, false]);
     setStand([false, false, false, false]);
     setDouble([false, false, false, false]);
-    setStake([[0], [0], [0], [0]]);
+    setStake([0, 0, 0, 0]);
     setBlackjack([false, false, false, false]);
     setDealerTotal([0]);
     setBet(false);
@@ -110,6 +107,7 @@ const App = () => {
             setStand={setStand}
             double={double}
             setDouble={setDouble}
+          
           />
         </>
         <Result

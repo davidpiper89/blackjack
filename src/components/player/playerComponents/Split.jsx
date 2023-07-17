@@ -41,8 +41,16 @@ const Split = ({
       setDeck(draw2.array);
 
       const newStake = [...stake];
-      newStake[index] = [stake[index][0]];
-      newStake.push([stake[index][0]]);
+      newStake[index] = stake[index];
+
+      // Find the next '0' in stake and replace it with the current stake
+      const nextZeroIndex = newStake.findIndex(
+        (stakeValue) => stakeValue === 0
+      );
+      if (nextZeroIndex !== -1) {
+        newStake[nextZeroIndex] = stake[index];
+      }
+
       setStake(newStake);
 
       // Update blackjack state
@@ -53,19 +61,21 @@ const Split = ({
         return newBlackjack;
       });
 
-      setChips(chips - stake[index][0]);
+      setChips(chips - stake[index]);
     }
   };
 
+  const buttonText = window.innerWidth <= 480 ? "Sp" : "Split";
+
   return (
     <button
-      className="splitButton"
+      className="splitButton d-flex"
       onClick={() => {
         splitHand(handIndex);
         setSplit(split + 1);
       }}
     >
-      Split
+      <div>{buttonText}</div>
     </button>
   );
 };

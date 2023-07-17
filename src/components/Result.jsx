@@ -45,17 +45,17 @@ const Result = ({
           newOutcome[i] = result.lose;
         } else if (isDealerBlackJack && isPlayerBlackJack) {
           newOutcome[i] = result.draw;
-          setChips((prevChips) => prevChips + stake[i][0]);
+          setChips((prevChips) => prevChips + stake[i]);
         } else if (dealerTotal[0] === total[i] && dealerEnd) {
           newOutcome[i] = result.draw;
-          setChips((prevChips) => prevChips + stake[i][0]);
+          setChips((prevChips) => prevChips + stake[i]);
         } else if (isPlayerBlackJack) {
           newOutcome[i] = result.win;
-          setChips((prevChips) => prevChips + 2.5 * stake[i][0]);
+          setChips((prevChips) => prevChips + 2.5 * stake[i]);
         } else if (dealerEnd) {
           if (dealerTotal[0] > 21 || total[i] > dealerTotal[0]) {
             newOutcome[i] = result.win;
-            setChips((prevChips) => prevChips + 2 * stake[i][0]);
+            setChips((prevChips) => prevChips + 2 * stake[i]);
           } else if (isDealerBlackJack || dealerTotal[0] > total[i]) {
             newOutcome[i] = result.lose;
           }

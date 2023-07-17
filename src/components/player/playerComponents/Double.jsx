@@ -13,7 +13,7 @@ const Double = ({
   setStake,
   chips,
   setChips,
-  setTotal
+  setTotal,
 }) => {
   const handleDouble = (remainingDeck, index) => {
     const hit = RandomCardPicker(remainingDeck);
@@ -26,7 +26,7 @@ const Double = ({
     const newStake = [...stake];
     newStake[index][0] *= 2;
     setStake(newStake);
-    setChips(chips - newStake[index][0] / 2);
+    setChips(chips - newStake[index] / 2);
 
     setDouble((prevState) => {
       let updatedDouble = [...prevState];
@@ -36,19 +36,20 @@ const Double = ({
 
     setTotal((prevState) => {
       const newTotal = [...prevState];
-    
+
       newTotal[handIndex] += hit.card.value;
       return newTotal;
     });
   };
 
+  const buttonText = window.innerWidth <= 480 ? "D" : "Double";
+
   return (
-    <button className="doubleButton"
-      onClick={() => {
-        handleDouble(remainingDeck, handIndex);
-      }}
+    <button
+      className="doubleButton d-flex"
+      onClick={() => handleDouble(remainingDeck, handIndex)}
     >
-      Double
+      <div>{buttonText}</div>
     </button>
   );
 };

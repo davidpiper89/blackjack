@@ -18,7 +18,12 @@ const Hit = ({
     setDeck(hit.array);
   };
 
-  return <button className="hitButton" onClick={() => handleHit(remainingDeck)}>Hit</button>;
-};
+  const buttonText = window.innerWidth <= 480 ? "H" : "Hit";
 
+  return (
+    <button className="hitButton d-flex" onClick={() => handleHit(remainingDeck)}>
+      <div>{buttonText}</div>
+    </button>
+  );
+};
 export default Hit;

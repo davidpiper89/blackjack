@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import Betting from "./playerComponents/Betting";
 import PlayerHoleCards from "./playerComponents/PlayerHoleCards";
 import Chips from "./playerComponents/Chips";
@@ -48,7 +48,6 @@ const PlayerInterface = ({
       );
 
       if (split > 0) {
-        // If there's a split, ensure all split hands have finished
         allHandsOver = allHandsOver && playerCards.length === split + 1;
       }
 
@@ -84,20 +83,33 @@ const PlayerInterface = ({
     });
   }, [playerCards, total, blackjack]);
 
-  useEffect(()=> {
-    const flatPlayerCards = playerCards.flat()
+  useEffect(() => {
+    const flatPlayerCards = playerCards.flat();
 
-    flatPlayerCards.forEach((hand, handIndex)=> {
-      if(!bust[handIndex] && total[handIndex] > 21) {
+    flatPlayerCards.forEach((hand, handIndex) => {
+      if (!bust[handIndex] && total[handIndex] > 21) {
         const newBust = [...bust];
         newBust[handIndex] = true;
-        setBust(newBust)
+        setBust(newBust);
       }
-    })
-  })
+    });
+  });
+
+  const gridClass = useMemo(() => {
+    switch (split) {
+      case 1:
+        return "1";
+      case 2:
+        return "2";
+      case 3:
+        return "3";
+      default:
+        return "0";
+    }
+  });
 
   const PlayerHandsDisplay = () => {
-    return playerCards.map((hands, handIndex) => {
+    return playerCards.flatMap((hands, handIndex) => {
       return hands.map((hand) => {
         const canSplit =
           hand.length === 2 && hand[0].value === hand[1].value && split < 3;
@@ -112,9 +124,12 @@ const PlayerInterface = ({
           total[handIndex] < 21;
 
         return (
-          <div key={handIndex}>
+          <div
+            key={`${handIndex}-${hand.card}`}
+            className={`d-flex flex-column`}
+          >
             <div className="d-flex justify-content-center align-items-center cards-container">
-              <PlayerHoleCards hand={hand} />
+              <PlayerHoleCards hand={hand} gridClass={gridClass} />
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center">
               <Total
@@ -130,7 +145,7 @@ const PlayerInterface = ({
                 setStake={setStake}
               />
               {showControls && (
-                <div>
+                <div className="d-flex">
                   <Hit
                     remainingDeck={remainingDeck}
                     setDeck={setDeck}
@@ -199,7 +214,9 @@ const PlayerInterface = ({
           setStake={setStake}
         />
       )}
-      <div className="d-flex">{bet && <PlayerHandsDisplay />}</div>
+      <div className={`split${gridClass}`}>
+        {bet && <PlayerHandsDisplay />}
+      </div>
       <Chips chips={chips} />
     </>
   );
