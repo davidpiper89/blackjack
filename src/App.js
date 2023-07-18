@@ -5,6 +5,7 @@ import Result from "./components/Result";
 import DealerInterface from "./components/dealer/DealerInterface";
 import PlayerInterface from "./components/player/PlayerInterface";
 import "./App.css";
+import InfoButton from "./components/InfoButton";
 
 const App = () => {
   const deckStart = useMemo(() => [...deck], []);
@@ -23,6 +24,10 @@ const App = () => {
   const [total, setTotal] = useState([false, false, false, false]);
   const [bust, setBust] = useState([false, false, false, false]);
   const [blackjack, setBlackjack] = useState([false, false, false, false]);
+
+  const [wins, setWins] = useState(0)
+  const [loses, setLoses] = useState(0)
+  const [draws, setDraws] = useState (0)
 
 
   const [dealerTotal, setDealerTotal] = useState([0]);
@@ -60,8 +65,9 @@ const App = () => {
         fluid="true"
         className="d-flex flex-column align-items-center mediaContainer"
       >
-        <header>
+        <header className="d-flex align-items-center">
           <h1 className="app-title">Piper's BlackJack</h1>
+          <InfoButton />
         </header>
 
         <>
@@ -77,6 +83,8 @@ const App = () => {
             playerEnd={playerEnd}
             dealerEnd={dealerEnd}
             setDealerEnd={setDealerEnd}
+            bust={bust}
+            split={split}
           />
           <PlayerInterface
             playerCards={playerCards}
@@ -126,6 +134,12 @@ const App = () => {
           stand={stand}
           double={double}
           blackjack={blackjack}
+          wins={wins}
+          setWins={setWins}
+          loses={loses}
+          setLoses={setLoses}
+          draws={draws}
+          setDraws={setDraws}
         />
         <footer></footer>
       </div>

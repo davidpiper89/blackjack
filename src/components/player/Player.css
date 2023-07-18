@@ -40,7 +40,7 @@
 
 .standButton {
   padding: 10px 20px;
-  background-color: #007bff; 
+  background-color: #007bff;
   border: none;
   color: white;
   text-align: center;
@@ -58,12 +58,12 @@
 }
 
 .standButton:hover {
-  background-color: #0069d9; 
+  background-color: #0069d9;
 }
 
 .doubleButton {
   padding: 10px 20px;
-  background-color: #000000; 
+  background-color: #000000;
   border: none;
   color: white;
   text-align: center;
@@ -77,7 +77,7 @@
 
 .doubleButton:active {
   transform: scale(0.95);
-  background-color: #404040; 
+  background-color: #404040;
 }
 
 .doubleButton:hover {
@@ -86,7 +86,7 @@
 
 .splitButton {
   padding: 10px 20px;
-  background-color: #008000; 
+  background-color: #008000;
   border: none;
   color: white;
   text-align: center;
@@ -100,23 +100,26 @@
 
 .splitButton:active {
   transform: scale(0.95);
-  background-color: #006400; 
+  background-color: #006400;
 }
 
 .splitButton:hover {
-  background-color: #32cd32; 
+  background-color: #32cd32;
 }
 
-.player-card0 {
-  width:100px ;
+.player-card0,
+.player-card1,
+.player-card2,
+.player-card3 {
+  max-width: 100px;
 }
-
 
 .split0 {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   gap: 20px;
+  width: 100%;
 }
 
 .split1 {
@@ -130,13 +133,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 20px;
+  gap: 5px;
 }
 
 .split3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 20px;
+  gap: 15px;
 }
-

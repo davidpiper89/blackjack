@@ -24,7 +24,7 @@ const Double = ({
     setDeck(hit.array);
 
     const newStake = [...stake];
-    newStake[index][0] *= 2;
+    newStake[index]*= 2;
     setStake(newStake);
     setChips(chips - newStake[index] / 2);
 

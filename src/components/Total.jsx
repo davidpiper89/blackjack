@@ -28,7 +28,7 @@ const Total = ({
 
   return (
     <>
-      <p>{total[handIndex]}</p>
+      <p className="total">{total[handIndex]}</p>
     </>
   );
 };
