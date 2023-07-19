@@ -51,4 +51,4 @@ export const deck = [
   // { value: 4, suit: "SPADE", image: "4S" },
   // { value: 3, suit: "SPADE", image: "3S" },
   // { value: 2, suit: "SPADE", image: "2S" },
-];
+].map((card) => Object.freeze(card));

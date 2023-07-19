@@ -1,10 +1,10 @@
 import React from "react";
-import Image from "../Image";
+import CardImage from "../CardImage";
 
 const DealerHoleCards = ({ dealerCards }) => {
   return dealerCards.map((card, index) => (
     <div key={index} className="dealer-card">
-      <Image card={card} key={card.image} />
+      <CardImage card={card} key={card.image} />
     </div>
   ));
 };

@@ -1,15 +1,14 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 import App from './App';
 
-test('renders learn react link', () => {
-  const { getByText } = render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+// App component test
+describe('App Component', () => {
+  test('renders App component', () => {
+    render(<App />);
 
-  expect(getByText(/learn/i)).toBeInTheDocument();
+    expect(screen.getByText("Piper's BlackJack")).toBeInTheDocument();
+  });
 });

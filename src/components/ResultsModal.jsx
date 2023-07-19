@@ -8,6 +8,7 @@ const ResultsModal = ({ resetGame, setBet, resetOutcome, results }) => {
     resetOutcome();
   };
 
+
   return (
     <Modal
       show={true}

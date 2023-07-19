@@ -16,9 +16,8 @@ const DealerInterface = ({
   playerEnd,
   setDealerEnd,
   bust,
-  split
+  split,
 }) => {
-
   let playerBusted;
 
   if (split === 0) {
@@ -34,7 +33,11 @@ const DealerInterface = ({
   useEffect(() => {
     if (!playerBusted) {
       const timeoutId = setTimeout(() => {
-        if (playerEnd && dealerHidden && !dealerCards.includes(dealerHidden[0])) {
+        if (
+          playerEnd &&
+          dealerHidden &&
+          !dealerCards.includes(dealerHidden[0])
+        ) {
           const newDealerCards = [...dealerCards, dealerHidden[0]];
           setDealerCards(newDealerCards);
         }
@@ -75,7 +78,7 @@ const DealerInterface = ({
     playerEnd,
     setDealerEnd,
     split,
-    bust
+    bust,
   ]);
 
   return (
@@ -83,7 +86,7 @@ const DealerInterface = ({
       {!bet ? (
         ""
       ) : (
-        <div>
+        <div data-testid="dealer-interface">
           <div className="d-flex justify-content-center align-items-center">
             <DealerHoleCards dealerCards={dealerCards} />
           </div>

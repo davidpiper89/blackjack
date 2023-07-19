@@ -1,6 +1,6 @@
 import React from "react";
 
-const Image = ({ card }) => {
+const CardImage = ({ card }) => {
   return (
     <img
       src={`../../assets/${card.image}.svg`}
@@ -10,4 +10,4 @@ const Image = ({ card }) => {
   );
 };
 
-export default Image;
+export default CardImage;
