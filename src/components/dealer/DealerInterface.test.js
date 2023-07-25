@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import DealerInterface from './DealerInterface';
 
 describe("DealerInterface", () => {
+  // Mock functions to pass as props
   const setDealerCards = jest.fn();
   const setDeck = jest.fn();
   const setDealerTotal = jest.fn();
@@ -31,9 +32,10 @@ describe("DealerInterface", () => {
     );
   });
 
+  // Test to ensure that the component renders
   it("should render the component", () => {
     expect(screen.getByTestId("dealer-interface")).toBeInTheDocument();
   });
 
-  // Additional tests for interactions and side effects go here
+  
 });

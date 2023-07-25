@@ -25,11 +25,11 @@ const App = () => {
   const [bust, setBust] = useState([false, false, false, false]);
   const [blackjack, setBlackjack] = useState([false, false, false, false]);
 
+ 
+
   const [wins, setWins] = useState(0);
   const [loses, setLoses] = useState(0);
   const [draws, setDraws] = useState(0);
-
-  console.log(wins, loses, draws);
 
   const [dealerTotal, setDealerTotal] = useState([0]);
 
@@ -68,7 +68,12 @@ const App = () => {
       >
         <header className="d-flex align-items-center">
           <h1 className="app-title">Piper's BlackJack</h1>
-          <InfoButton wins={wins} loses={loses} draws={draws} />
+          <InfoButton
+            wins={wins}
+            loses={loses}
+            draws={draws}
+          
+          />
         </header>
 
         <>
@@ -140,6 +145,7 @@ const App = () => {
           setLoses={setLoses}
           draws={draws}
           setDraws={setDraws}
+   
         />
         <footer></footer>
       </div>

@@ -2,6 +2,7 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 
 const StatsModal = ({ setShowStats, wins, loses, draws }) => {
+  const hands = wins + loses + draws;
   return (
     <Modal
       show={true}
@@ -9,9 +10,10 @@ const StatsModal = ({ setShowStats, wins, loses, draws }) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <p>wins:{wins}</p>
-      <p>loses:{loses}</p>
-      <p>draws:{draws}</p>
+      <p>Hands:{hands}</p>
+      <p>Wins:{wins}</p>
+      <p>Loses:{loses}</p>
+      <p>Draws:{draws}</p>
       <button
         onClick={() => {
           setShowStats(false);

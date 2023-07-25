@@ -1,27 +1,35 @@
 import React from "react";
 
 const Betting = ({ setBet, bet, setChips, chips, stake, setStake }) => {
+  const placeBet = (amount) => {
+    if (stake[0] + amount > chips) {
+      alert("You cannot bet more than your available chips.");
+    } else {
+      setStake([stake[0] + amount, ...stake.slice(1)]);
+    }
+  };
+
+  const undoBet = () => {
+    setStake([0, ...stake.slice(1)]);
+  };
 
   return (
     <>
       <div>
         <button
-          className="bet-button"
-          onClick={() => setStake([stake[0] + 1, ...stake.slice(1)])}
+          className="bet-button cypress-bet-test"
+          onClick={() => placeBet(1)}
         >
           Bet 1
         </button>
-        <button
-          className="bet-button"
-          onClick={() => setStake([stake[0] + 5, ...stake.slice(1)])}
-        >
+        <button className="bet-button" onClick={() => placeBet(5)}>
           Bet 5
         </button>
-        <button
-          className="bet-button"
-          onClick={() => setStake([stake[0] + 10, ...stake.slice(1)])}
-        >
+        <button className="bet-button" onClick={() => placeBet(10)}>
           Bet 10
+        </button>
+        <button className="bet-button" onClick={undoBet}>
+          Clear
         </button>
       </div>
       <div className="bet-text">Total bet : {stake[0]}</div>
@@ -44,4 +52,3 @@ const Betting = ({ setBet, bet, setChips, chips, stake, setStake }) => {
 };
 
 export default Betting;
-
