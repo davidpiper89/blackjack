@@ -9,6 +9,8 @@ import Split from "./playerComponents/Split";
 import Total from "../Total";
 import Bet from "./playerComponents/Bet";
 import "./Player.css";
+import { cardConverterToTotals } from "../../utils/cardConverter";
+import { totalCalc } from "../../utils/totalCalc";
 
 const PlayerInterface = ({
   playerCards,
@@ -87,13 +89,23 @@ const PlayerInterface = ({
     const flatPlayerCards = playerCards.flat();
 
     flatPlayerCards.forEach((hand, handIndex) => {
-      if (!bust[handIndex] && total[handIndex] > 21) {
+      const handTotals = cardConverterToTotals(hand);
+      const { total: handTotal, softAce } = totalCalc(handTotals);
+      if (!bust[handIndex] && handTotal > 21 && !softAce) {
         const newBust = [...bust];
         newBust[handIndex] = true;
         setBust(newBust);
       }
+
+      if (total[handIndex] !== handTotal) {
+        setTotal((prevState) => {
+          const newTotal = [...prevState];
+          newTotal.splice(handIndex, 1, handTotal);
+          return newTotal;
+        });
+      }
     });
-  });
+  }, [playerCards, bust, total]);
 
   const gridClass = useMemo(() => {
     switch (split) {
@@ -214,9 +226,7 @@ const PlayerInterface = ({
           setStake={setStake}
         />
       )}
-      <div className={`split${gridClass}`}>
-        {bet && <PlayerHandsDisplay />}
-      </div>
+      <div className={`split${gridClass}`}>{bet && <PlayerHandsDisplay />}</div>
       <Chips chips={chips} />
     </>
   );

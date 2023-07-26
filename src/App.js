@@ -25,7 +25,7 @@ const App = () => {
   const [bust, setBust] = useState([false, false, false, false]);
   const [blackjack, setBlackjack] = useState([false, false, false, false]);
 
- 
+  console.log(bust);
 
   const [wins, setWins] = useState(0);
   const [loses, setLoses] = useState(0);

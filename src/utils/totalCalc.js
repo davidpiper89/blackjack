@@ -8,10 +8,12 @@ export const totalCalc = (totalsArr) => {
 
   let total = nonAceTotal + aceCount;
 
-
+  let softAce = false;
   if (aceCount > 0 && total + 10 <= 21) {
-    total += 10; 
+    total += 10;
+    softAce = true;
   }
 
-  return total;
+  return { total, softAce };
 };
+

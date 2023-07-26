@@ -37,6 +37,7 @@ const Result = ({
     setOutcome([]);
     setShowModal(false);
   };
+  
 
   useEffect(() => {
     let timer;
