@@ -17,23 +17,27 @@ const DealerInterface = ({
   setDealerEnd,
   bust,
   split,
+  blackjack,
 }) => {
-  let playerBusted;
+  const playerBusted = bust.slice(0, split + 1).every((bust) => bust);
+  const playerAllHandsBlackJack = blackjack
+    .slice(0, split + 1)
+    .every((blackjack) => blackjack);
 
-  if (split === 0) {
-    playerBusted = bust[0];
-  }
-  if (split === 1) {
-    playerBusted = bust[0] && bust[1];
-  }
-  if (split === 2) {
-    playerBusted = bust[0] && bust[1] && bust[2];
-  }
+  const dealerFirstCard = (cards) => {
+    if (!cards) {
+      return;
+    } else if (cards) return cards[0].value;
+  };
+  const dealerShowTenOrAce = dealerFirstCard(dealerCards);
 
   useEffect(() => {
     if (!playerBusted) {
       const timeoutId = setTimeout(() => {
-        if (
+        if (playerAllHandsBlackJack && dealerShowTenOrAce) {
+          const newDealerCards = [...dealerCards, dealerHidden[0]];
+          setDealerCards(newDealerCards);
+        } else if (
           playerEnd &&
           dealerHidden &&
           !dealerCards.includes(dealerHidden[0])
@@ -45,7 +49,13 @@ const DealerInterface = ({
 
       return () => clearTimeout(timeoutId);
     }
-  }, [playerEnd, dealerCards, dealerHidden, setDealerCards, playerBusted]);
+  }, [
+    playerEnd,
+    dealerHidden,
+    setDealerCards,
+    playerBusted,
+    playerAllHandsBlackJack,
+  ]);
 
   const dealerDraw = useCallback(
     (remainingDeck) => {
@@ -62,11 +72,22 @@ const DealerInterface = ({
     if (playerBusted) {
       setDealerEnd(true);
       return;
-    } else if (dealerCards && dealerCards.length >= 2 && dealerTotal < 17) {
+    } else if (
+      dealerCards &&
+      dealerCards.length >= 2 &&
+      dealerTotal < 17 &&
+      !playerAllHandsBlackJack
+    ) {
       const timeoutId = setTimeout(() => {
         dealerDraw(remainingDeck);
       }, 1000);
       return () => clearTimeout(timeoutId);
+    } else if (
+      dealerCards &&
+      dealerCards.length === 2 &&
+      playerAllHandsBlackJack
+    ) {
+      setDealerEnd(true);
     } else if (playerEnd && dealerTotal >= 17) {
       setDealerEnd(true);
     }
@@ -77,8 +98,6 @@ const DealerInterface = ({
     dealerDraw,
     playerEnd,
     setDealerEnd,
-    split,
-    bust,
   ]);
 
   return (

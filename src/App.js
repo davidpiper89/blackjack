@@ -89,6 +89,7 @@ const App = () => {
             setDealerEnd={setDealerEnd}
             bust={bust}
             split={split}
+            blackjack={blackjack}
           />
           <PlayerInterface
             playerCards={playerCards}
