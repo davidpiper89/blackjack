@@ -65,7 +65,8 @@ const Blackjack = () => {
     <>
       <div fluid="true" className="mediaContainer">
         <h1 className="blackjackTitle">
-          Piper's Blackjack <InfoButton />
+          Piper's Blackjack{" "}
+          <InfoButton wins={wins} loses={loses} draws={draws} />
         </h1>
 
         <>
