@@ -15,6 +15,10 @@
   }
 }
 
+.playerButtons {
+  display: flex;
+}
+
 .hitButton {
   padding: 10px 20px;
   background-color: #ff0000;
@@ -108,19 +112,19 @@
 }
 
 @media (max-width: 768px) {
-  .player-card0,
-  .player-card1,
-  .player-card2,
-  .player-card3 {
+  .playerCard0,
+  .playerCard1,
+  .playerCard2,
+  .playerCard3 {
     max-width: 100px;
   }
 }
 
 @media (min-width: 768px) {
-  .player-card0,
-  .player-card1,
-  .player-card2,
-  .player-card3 {
+  .playerCard0,
+  .playerCard1,
+  .playerCard2,
+  .playerCard3 {
     max-width: 130px;
   }
 }
@@ -152,4 +156,11 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 15px;
+}
+
+.bettingContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
 }

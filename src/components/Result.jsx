@@ -15,29 +15,80 @@ const Result = ({
   setWins,
   setLoses,
   setDraws,
+  chips,
+  UID,
 }) => {
   const result = { win: "You win", lose: "You lose", draw: "Push" };
   const [outcome, setOutcome] = useState([]);
-
   const [showModal, setShowModal] = useState(false);
 
+  const determineHandOutcome = (
+    handTotal,
+    dealerTotal,
+    stakeForHand,
+    playerCards,
+    dealerCards
+  ) => {
+    const isPlayerBlackJack = playerCards[0].length === 2 && handTotal === 21;
+    const isDealerBlackJack = dealerCards.length === 2 && dealerTotal === 21;
+   
+
+    if (handTotal > 21) {
+      return { result: result.lose, stakeResult: -stakeForHand };
+    } else if (isDealerBlackJack && isPlayerBlackJack) {
+      return { result: result.draw, stakeResult: 0 };
+    } else if (isPlayerBlackJack && !isDealerBlackJack) {
+      return { result: result.win, stakeResult: 2.5 * stakeForHand };
+    } else if (dealerTotal === handTotal) {
+      return { result: result.draw, stakeResult: 0 };
+    } else if (dealerTotal > 21 || handTotal > dealerTotal) {
+      return { result: result.win, stakeResult: stakeForHand };
+    } else if (isDealerBlackJack || dealerTotal > handTotal) {
+      return { result: result.lose, stakeResult: -stakeForHand };
+    }
+  };
+
   useEffect(() => {
-    if (outcome.length === 1 && outcome[0] === "You lose") {
-      setLoses((prevLoses) => prevLoses + 1);
+    const newOutcome = [...outcome];
+    for (let i = 0; i < 4; i++) {
+      if (total[i] !== false) {
+        const handOutcome = determineHandOutcome(
+          total[i],
+          dealerTotal[0],
+          stake[i],
+          playerCards[i],
+          dealerCards
+        );
+        if (handOutcome) {
+          newOutcome[i] = handOutcome;
+
+          // Adjust chips based on the outcome
+          if (handOutcome.result === result.win) {
+            setChips((prevChips) => prevChips + handOutcome.stakeResult * 2);
+          } else if (handOutcome.result === result.draw) {
+            setChips((prevChips) => prevChips + handOutcome.stakeResult);
+          }
+        }
+      }
     }
-    if (outcome.length === 1 && outcome[0] === "You win") {
-      setWins((prevWins) => prevWins + 1);
-    }
-    if (outcome.length === 1 && outcome[0] === "Push") {
-      setDraws((prevDraws) => prevDraws + 1);
-    }
+    setOutcome(newOutcome);
+  }, [dealerEnd]);
+
+  useEffect(() => {
+    outcome.forEach((outcomeResult) => {
+      if (outcomeResult.result === result.lose) {
+        setLoses((prevLoses) => prevLoses + 1);
+    
+      } else if (outcomeResult.result === result.win) {
+        setWins((prevWins) => prevWins + 1);
+       
+      } else if (outcomeResult.result === result.draw) {
+        setDraws((prevDraws) => prevDraws + 1);
+      
+      }
+    });
   }, [outcome]);
 
-  const handleResetOutcome = () => {
-    setOutcome([]);
-    setShowModal(false);
-  };
-  
 
   useEffect(() => {
     let timer;
@@ -49,38 +100,15 @@ const Result = ({
     return () => clearTimeout(timer);
   }, [outcome]);
 
-  useEffect(() => {
-    let newOutcome = [...outcome];
-    for (let i = 0; i < 4; i++) {
-      if (total[i] !== false) {
-        const isPlayerBlackJack =
-          playerCards[i][0].length === 2 && total[i] === 21;
-        const isDealerBlackJack =
-          dealerCards[0].length === 2 && dealerTotal[0] === 21;
 
-        if (total[i] > 21) {
-          newOutcome[i] = result.lose;
-        } else if (isDealerBlackJack && isPlayerBlackJack) {
-          newOutcome[i] = result.draw;
-          setChips((prevChips) => prevChips + stake[i]);
-        } else if (dealerTotal[0] === total[i] && dealerEnd) {
-          newOutcome[i] = result.draw;
-          setChips((prevChips) => prevChips + stake[i]);
-        } else if (isPlayerBlackJack) {
-          newOutcome[i] = result.win;
-          setChips((prevChips) => prevChips + 2.5 * stake[i]);
-        } else if (dealerEnd) {
-          if (dealerTotal[0] > 21 || total[i] > dealerTotal[0]) {
-            newOutcome[i] = result.win;
-            setChips((prevChips) => prevChips + 2 * stake[i]);
-          } else if (isDealerBlackJack || dealerTotal[0] > total[i]) {
-            newOutcome[i] = result.lose;
-          }
-        }
-      }
-    }
-    setOutcome(newOutcome);
-  }, [dealerEnd]);
+  useEffect(() => {
+    localStorage.setItem("chips", chips);
+  }, [chips]);
+
+  const handleResetOutcome = () => {
+    setOutcome([]);
+    setShowModal(false);
+  };
 
   return showModal ? (
     <ResultsModal

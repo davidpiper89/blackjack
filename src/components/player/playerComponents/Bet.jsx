@@ -1,8 +1,8 @@
 import React from "react";
 
-const Bet = ({ hand, handIndex, stake, setStake }) => {
+const Bet = ({  handIndex, stake}) => {
 
-  return <div className="bet-text">Bet: {stake[handIndex]}</div>;
+  return <div className="betText">Bet: {stake[handIndex]}</div>;
 };
 
 export default Bet;

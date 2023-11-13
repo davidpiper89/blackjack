@@ -12,7 +12,34 @@ import "./Player.css";
 import { cardConverterToTotals } from "../../utils/cardConverter";
 import { totalCalc } from "../../utils/totalCalc";
 
-const PlayerInterface = ({
+// Checks if the player's turn has ended, considering all hands are either blackjack, bust, stand, double. takes into account split.
+
+export const isAllHandsOver = (
+  playerCards,
+  stand,
+  double,
+  total,
+  blackjack,
+  bust,
+  split
+) => {
+  let allHandsOver = playerCards.every(
+    (_, index) =>
+      stand[index] ||
+      (double[index] && total[index] <= 21) ||
+      blackjack[index] ||
+      bust[index] ||
+      total[index] === 21
+  );
+
+  if (split > 0) {
+    allHandsOver = allHandsOver && playerCards.length === split + 1;
+  }
+
+  return allHandsOver;
+};
+
+export const PlayerInterface = ({
   playerCards,
   remainingDeck,
   setPlayerCards,
@@ -37,41 +64,13 @@ const PlayerInterface = ({
   setStand,
   double,
   setDouble,
+  setDealerHidden,
+  setDealerCards,
 }) => {
-  useEffect(() => {
-    if (!playerEnd && playerCards.length > 0 && playerCards.length <= 4) {
-      let allHandsOver = playerCards.every(
-        (_, index) =>
-          stand[index] ||
-          (double[index] && total[index] <= 21) ||
-          blackjack[index] ||
-          bust[index] ||
-          total[index] === 21
-      );
+  // Checks and updates if a player has blackjack.
 
-      if (split > 0) {
-        allHandsOver = allHandsOver && playerCards.length === split + 1;
-      }
-
-      if (allHandsOver) {
-        setPlayerEnd(true);
-      }
-    }
-  }, [
-    playerCards,
-    playerEnd,
-    stand,
-    double,
-    bust,
-    blackjack,
-    total,
-    setPlayerEnd,
-    split,
-  ]);
-
-  useEffect(() => {
+  const updateBlackjackStatus = () => {
     const flatPlayerCards = playerCards.flat();
-
     flatPlayerCards.forEach((hand, handIndex) => {
       if (
         !blackjack[handIndex] &&
@@ -83,11 +82,12 @@ const PlayerInterface = ({
         setBlackjack(newBlackjack);
       }
     });
-  }, [playerCards, total, blackjack]);
+  };
 
-  useEffect(() => {
+  // Updates player's bust and total based on current hand value.
+
+  const updateBustAndTotal = () => {
     const flatPlayerCards = playerCards.flat();
-
     flatPlayerCards.forEach((hand, handIndex) => {
       const handTotals = cardConverterToTotals(hand);
       const { total: handTotal, softAce } = totalCalc(handTotals);
@@ -96,7 +96,6 @@ const PlayerInterface = ({
         newBust[handIndex] = true;
         setBust(newBust);
       }
-
       if (total[handIndex] !== handTotal) {
         setTotal((prevState) => {
           const newTotal = [...prevState];
@@ -105,7 +104,34 @@ const PlayerInterface = ({
         });
       }
     });
-  }, [playerCards, bust, total]);
+  };
+
+  useEffect(() => {
+    if (
+      bet &&
+      !playerEnd &&
+      playerCards.length > 0 &&
+      playerCards.length <= 4 &&
+      isAllHandsOver(playerCards, stand, double, total, blackjack, bust, split)
+    ) {
+      setPlayerEnd(true);
+    }
+  }, [
+    bet,
+    playerCards,
+    playerEnd,
+    stand,
+    double,
+    bust,
+    blackjack,
+    total,
+    split,
+  ]);
+
+  useEffect(updateBlackjackStatus, [playerCards, total, blackjack]);
+  useEffect(updateBustAndTotal, [playerCards, bust, total]);
+
+  // Determines the CSS class for grid based on the split value.
 
   const gridClass = useMemo(() => {
     switch (split) {
@@ -118,7 +144,7 @@ const PlayerInterface = ({
       default:
         return "0";
     }
-  });
+  }, [split]);
 
   const PlayerHandsDisplay = () => {
     return playerCards.flatMap((hands, handIndex) => {
@@ -136,14 +162,11 @@ const PlayerInterface = ({
           total[handIndex] < 21;
 
         return (
-          <div
-            key={`${handIndex}-${hand.card}`}
-            className={`d-flex flex-column`}
-          >
-            <div className="d-flex justify-content-center align-items-center cards-container">
+          <div key={`${handIndex}-${hand.card}`}>
+            <div className="cardsContainer">
               <PlayerHoleCards hand={hand} gridClass={gridClass} />
             </div>
-            <div className="d-flex flex-column justify-content-center align-items-center">
+            <div className="buttonsContainer">
               <Total
                 hand={hand}
                 handIndex={handIndex}
@@ -157,7 +180,7 @@ const PlayerInterface = ({
                 setStake={setStake}
               />
               {showControls && (
-                <div className="d-flex">
+                <div className="playerButtons">
                   <Hit
                     remainingDeck={remainingDeck}
                     setDeck={setDeck}
@@ -224,6 +247,10 @@ const PlayerInterface = ({
           chips={chips}
           stake={stake}
           setStake={setStake}
+          setPlayerCards={setPlayerCards}
+          setDeck={setDeck}
+          setDealerCards={setDealerCards}
+          setDealerHidden={setDealerHidden}
         />
       )}
       <div className={`split${gridClass}`}>{bet && <PlayerHandsDisplay />}</div>

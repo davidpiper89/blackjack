@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import DealerHoleCards from "./DealerHoleCards";
 import Total from "../Total";
 import { RandomCardPicker } from "../../utils/RandomCardPicker";
@@ -19,108 +19,108 @@ const DealerInterface = ({
   split,
   blackjack,
 }) => {
-  const playerBusted = bust.slice(0, split + 1).every((bust) => bust);
-  const playerAllHandsBlackJack = blackjack
-    .slice(0, split + 1)
-    .every((blackjack) => blackjack);
-
-  const dealerFirstCard = (cards) => {
-    if (!cards) {
-      return;
-    } else if (cards) return cards[0].value;
-  };
-  const dealerShowTenOrAce = dealerFirstCard(dealerCards);
-
-  useEffect(() => {
-    if (!playerBusted) {
-      const timeoutId = setTimeout(() => {
-        if (playerAllHandsBlackJack && dealerShowTenOrAce) {
-          const newDealerCards = [...dealerCards, dealerHidden[0]];
-          setDealerCards(newDealerCards);
-        } else if (
-          playerEnd &&
-          dealerHidden &&
-          !dealerCards.includes(dealerHidden[0])
-        ) {
-          const newDealerCards = [...dealerCards, dealerHidden[0]];
-          setDealerCards(newDealerCards);
-        }
-      }, 1000);
-
-      return () => clearTimeout(timeoutId);
-    }
-  }, [
-    playerEnd,
-    dealerHidden,
-    setDealerCards,
-    playerBusted,
-    playerAllHandsBlackJack,
-  ]);
-
-  const dealerDraw = useCallback(
-    (remainingDeck) => {
+  const dealerDraw = useCallback(() => {
+    setTimeout(() => {
       const newCard = RandomCardPicker(remainingDeck);
-      const newCards = [...dealerCards, newCard.card];
+      setDealerCards((prevCards) => [...prevCards, newCard.card]);
 
-      setDealerCards(newCards);
       setDeck(newCard.array);
-    },
-    [dealerCards, setDealerCards, setDeck]
-  );
+    }, 1500);
+  }, [remainingDeck, setDealerCards, setDeck]);
+
+  //work out if player busts in 1 or all hands
+  const playerBusted = bust.slice(0, split + 1).every(Boolean);
+  //work out if player has blackjack in all hands
+  const allHandsBlackjack =
+    blackjack.slice(0, split + 1).every(Boolean) && split <= 3;
 
   useEffect(() => {
     if (playerBusted) {
       setDealerEnd(true);
-      return;
     } else if (
-      dealerCards &&
-      dealerCards.length >= 2 &&
-      dealerTotal < 17 &&
-      !playerAllHandsBlackJack
+      allHandsBlackjack &&
+      !(dealerCards[0].value === "ACE" || dealerCards[0].value === 10)
     ) {
-      const timeoutId = setTimeout(() => {
-        dealerDraw(remainingDeck);
-      }, 1000);
-      return () => clearTimeout(timeoutId);
-    } else if (
-      dealerCards &&
-      dealerCards.length === 2 &&
-      playerAllHandsBlackJack
-    ) {
-      setDealerEnd(true);
-    } else if (playerEnd && dealerTotal >= 17) {
       setDealerEnd(true);
     }
-  }, [
-    dealerCards,
-    remainingDeck,
-    dealerTotal,
-    dealerDraw,
-    playerEnd,
-    setDealerEnd,
-  ]);
+  }, [playerEnd]);
 
-  return (
-    <>
-      {!bet ? (
-        ""
-      ) : (
-        <div data-testid="dealer-interface">
-          <div className="d-flex justify-content-center align-items-center">
-            <DealerHoleCards dealerCards={dealerCards} />
-          </div>
-          <div className="d-flex flex-column justify-content-center align-items-center">
-            <Total
-              hand={dealerCards}
-              handIndex={0}
-              total={dealerTotal}
-              setTotal={setDealerTotal}
-            />
-          </div>
-        </div>
-      )}
-    </>
-  );
+  const dealerWillShowHiddenOnly = () => {
+    const timeoutId = setTimeout(() => {
+      setDealerCards((prevCards) => [...prevCards, dealerHidden[0]]);
+      setTimeout(() => {
+        setDealerEnd(true);
+      }, 500);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  };
+  useEffect(() => {
+    if (
+      allHandsBlackjack &&
+      (dealerCards[0].value === "ACE" || dealerCards[0].value === 10) &&
+      playerEnd
+    ) {
+      dealerWillShowHiddenOnly(allHandsBlackjack, dealerCards);
+    }
+  }, [allHandsBlackjack, playerEnd]);
+
+  const dealerWillDrawToSeventeenOrMore = () => {
+    const timeoutId = setTimeout(() => {
+      setDealerCards((prevCards) => [...prevCards, dealerHidden[0]]);
+    }, 1200);
+    return () => clearTimeout(timeoutId);
+  };
+
+  useEffect(() => {
+    if (playerEnd && !allHandsBlackjack && !playerBusted) {
+      dealerWillDrawToSeventeenOrMore();
+    }
+  }, [allHandsBlackjack, playerBusted, playerEnd]);
+
+  useEffect(() => {
+    if (
+      playerEnd &&
+      !allHandsBlackjack &&
+      !playerBusted &&
+      dealerCards &&
+      dealerCards.length >= 2 &&
+      dealerTotal < 17
+    ) {
+      dealerDraw();
+    } else if (
+      playerEnd &&
+      !allHandsBlackjack &&
+      !playerBusted &&
+      dealerCards &&
+      dealerCards.length >= 2 &&
+      dealerTotal >= 17
+    ) {
+      setDealerEnd(true);
+    }
+  }, [playerEnd, allHandsBlackjack, playerBusted, dealerTotal]);
+
+  return bet ? (
+    <div
+      className="dealerInterface"
+      role="region"
+      aria-label="Dealer Interface"
+    >
+      <div className="dealerCards">
+        <DealerHoleCards dealerCards={dealerCards} />
+      </div>
+      <div className="dealerTotal">
+        <Total
+          hand={dealerCards}
+          handIndex={0}
+          total={dealerTotal}
+          setTotal={setDealerTotal}
+        />
+      </div>
+    </div>
+  ) : null;
 };
 
 export default DealerInterface;

@@ -1,12 +1,28 @@
 @media (max-width: 768px) {
-  .dealer-card {
+  .dealerCard {
     max-width: 100px;
   }
 }
 
-@media (min-width: 768px ) {
-  .dealer-card {
+@media (min-width: 768px) {
+  .dealerCard {
     max-width: 130px;
   }
-  
+}
+
+.dealerInterface {
+  padding: 20px;
+}
+
+.dealerCards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dealerTotal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

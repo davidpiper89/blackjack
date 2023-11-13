@@ -2,10 +2,9 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 
-const ResultsModal = ({ resetGame, setBet, resetOutcome, results }) => {
+const ResultsModal = ({ resetGame, resetOutcome, results }) => {
   const handleRestartGame = () => {
     resetGame();
-    setBet(false);
     resetOutcome();
   };
 
@@ -16,7 +15,7 @@ const ResultsModal = ({ resetGame, setBet, resetOutcome, results }) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
           Game Results
         </Modal.Title>
@@ -24,7 +23,9 @@ const ResultsModal = ({ resetGame, setBet, resetOutcome, results }) => {
       <Modal.Body>
         {results.map((result, index) => (
           <p key={index}>
-            Hand {index + 1}: {result}
+            Hand {index + 1}: {result.result || "No Result"} (
+            {result.stakeResult > 0 ? "+" : ""}
+            {result.stakeResult || 0})
           </p>
         ))}
       </Modal.Body>
