@@ -46,21 +46,6 @@ const Blackjack = () => {
     setBet(false);
   };
 
-  // useEffect(() => {
-  //   const start = beginGame([...deck]);
-  //   setPlayerCards([start.playerCards]);
-  //   setDeck(start.currentDeck);
-  //   setDealerCards(start.dealerCards);
-  //   setDealerHidden(start.dealerHidden);
-  // }, [deckStart]);
-
-  // useEffect(() => {
-  //   const storedChips = localStorage.getItem("chips");
-  //   if (storedChips) {
-  //     setChips(Number(storedChips));
-  //   }
-  // }, []);
-
   return (
     <>
       <div fluid="true" className="mediaContainer">

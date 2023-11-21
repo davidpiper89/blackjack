@@ -8,7 +8,7 @@ const InfoButton = ({
   loses,
   draws,
 }) => {
-  console.log(wins, loses, draws);
+
   const [showStats, setShowStats] = useState(false);
   ;
 
