@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { deck } from "../../../utils/deck";
 import { beginGame } from "../../../utils/beginGame";
 
@@ -12,14 +12,18 @@ const Betting = ({
   setPlayerCards,
   setDeck,
   setDealerCards,
-  setDealerHidden
+  setDealerHidden,
 }) => {
+  const [customBet, setCustomBet] = useState("");
+
   const placeBet = (amount) => {
-    if (stake[0] + amount > chips) {
+    const betAmount = amount === "custom" ? customBet : amount;
+    if (stake[0] + betAmount > chips) {
+      console.log(stake[0], betAmount, chips);
       alert("You cannot bet more than your available chips.");
-    } else {
-      setStake([stake[0] + amount, ...stake.slice(1)]);
+      return;
     }
+    setStake([stake[0] + betAmount, ...stake.slice(1)]);
   };
 
   const undoBet = () => {
@@ -33,18 +37,34 @@ const Betting = ({
     setDealerHidden(start.dealerHidden);
   };
 
+  const handleCustomBetChange = (e) => {
+    const betValue = Math.min(Math.max(0, e.target.value), chips);
+    setCustomBet(betValue);
+  };
+
   return (
     <>
       <div className="bettingContainer">
-        <button className="betButton" onClick={() => placeBet(1)}>
-          Bet 1
-        </button>
-        <button className="betButton" onClick={() => placeBet(5)}>
-          Bet 5
-        </button>
-        <button className="betButton" onClick={() => placeBet(10)}>
-          Bet 10
-        </button>
+        <div className="setBetOptions">
+          <button className="betButton" onClick={() => placeBet(5)}>
+            Bet 5
+          </button>
+          <button className="betButton" onClick={() => placeBet(10)}>
+            Bet 10
+          </button>
+        </div>
+        <div>
+          <input
+            type="number"
+            value={customBet}
+            onChange={handleCustomBetChange}
+            placeholder="Custom Bet"
+            className="customBetInput"
+          />
+          <button className="betButton" onClick={() => placeBet("custom")}>
+            Place Custom Bet
+          </button>
+        </div>
         <button className="betButton" onClick={undoBet}>
           Clear
         </button>

@@ -54,44 +54,7 @@
   margin-left: 10px;
   margin-right: 10px;
 }
-.buttonsContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 
-.betButton,
-.confirmButton {
-  background-color: #ffffff;
-  border: none;
-  color: #2f9c75;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s ease-in-out;
-  font-weight: bold;
-}
-
-.confirmButton:hover,
-.betButton:hover {
-  transform: scale(1.1);
-  color: #ffffff;
-  background-color: #206a4b;
-}
-
-@media (max-width: 768px) {
-  .betButton,
-  .confirmButton {
-    padding: 12px 24px;
-    font-size: 14px;
-  }
-}
 
 @media (max-width: 768px) {
   .appTitle {
